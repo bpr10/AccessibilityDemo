@@ -8,26 +8,53 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="bpr10.git.voodosample.MainActivity">
+    tools:context="bpr10.git.voodosample1.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"/>
-
-    <EditText
-        android:id="@+id/password"
+    <LinearLayout
+        android:id="@+id/root_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:hint="password"
-        android:inputType="textPassword"/>
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
 
-    <EditText
-        android:id="@+id/username"
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="password"
+            android:inputType="textPassword"/>
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/password"
+            android:hint="UserName"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/root_accessibility_disabled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/password"
         android:layout_centerInParent="true"
-        android:hint="UserName"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/error_accessibility_disabled"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
+
+        <Button
+            android:id="@+id/button_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="Go to Settings "/>
+    </LinearLayout>
+
 </RelativeLayout>

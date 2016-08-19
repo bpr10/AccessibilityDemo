@@ -1,4 +1,4 @@
-package bpr10.git.voodosample;
+package bpr10.git.voodosample1;
 
 import org.junit.Test;
 

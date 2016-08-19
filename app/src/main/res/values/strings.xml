@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">VoodoSample</string>
+    <string name="error_accessibility_disabled">We need assessibility permissionenabled for this demo to work. Pleas ego to settins and enable to proceed</string>
 </resources>

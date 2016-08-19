@@ -13,10 +13,9 @@
     <LinearLayout
         android:id="@+id/root_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:visibility="gone"
         >
 
         <EditText
@@ -32,7 +31,15 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/password"
             android:hint="UserName"/>
-
+        <ScrollView
+            android:id="@+id/root_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/txt_log"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </ScrollView>
     </LinearLayout>
 
     <LinearLayout
@@ -40,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <TextView

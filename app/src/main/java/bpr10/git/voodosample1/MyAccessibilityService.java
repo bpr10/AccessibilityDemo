@@ -40,6 +40,7 @@ public class MyAccessibilityService extends AccessibilityService {
     packages.add("com.flipkart.android/.activity.MLoginActivity");
     packages.add("com.whatsapp/.Conversation");
     packages.add("com.facebook.orca/com.facebook.messenger.neue.MainActivity");
+    packages.add("bpr10.git.voodosample/bpr10.git.voodosample1.MainActivity");
   }
 
   @Override
@@ -97,8 +98,15 @@ public class MyAccessibilityService extends AccessibilityService {
     }
     if (("android.widget.TextView").equals(source.getClassName()) || ("android.widget.EditText")
         .equals(source.getClassName())) {
-      Log.d(LOG_TAG, "Node info :" + source.getClassName() + " with id:" + source
-          .getViewIdResourceName() + " text:" + source.getText());
+      String id = source.getViewIdResourceName();
+      if (id != null) {
+        id = id.split("/")[1];
+      }
+      String eventData = "id: " + id + ", text:" + source.getText();
+
+      Log.d(LOG_TAG, eventData);
+      BusProvider.UI_BUS.post(new TextChangeEvent(eventData));
+
     }
     for (int i = 0; i < source.getChildCount(); i++) {
       AccessibilityNodeInfo child = source.getChild(i);

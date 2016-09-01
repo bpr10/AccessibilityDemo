@@ -10,7 +10,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MyAccessibilityService extends AccessibilityService {
   private static final String LOG_TAG = MyAccessibilityService.class.getSimpleName();
@@ -25,7 +24,7 @@ public class MyAccessibilityService extends AccessibilityService {
         {
             "com.flipkart.android", "com.myntra.android", "com.whatsapp", "com.facebook.orca",
             "com.msf.kbank.mobile", "bpr10.git.voodosample", "com.facebook.katana", "net.one97" +
-            ".paytm", "com.ubercab", "com.nianticlabs.pokemongo"
+            ".paytm", "com.ubercab", "com.nianticlabs.pokemongo", "com.phonepe.app"
         };
     info.eventTypes = AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED |
         AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
@@ -41,16 +40,19 @@ public class MyAccessibilityService extends AccessibilityService {
     packages.add("com.whatsapp/.Conversation");
     packages.add("com.facebook.orca/com.facebook.messenger.neue.MainActivity");
     packages.add("bpr10.git.voodosample/bpr10.git.voodosample1.MainActivity");
+    packages.add("com.phonepe.app/.ui.activity.Navigator_MainActivity");
   }
 
   @Override
   public void onAccessibilityEvent(AccessibilityEvent event) {
+    boolean shouldToast = true;
     if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
       ComponentName componentName = new ComponentName(
           event.getPackageName().toString(),
           event.getClassName().toString()
       );
 
+      shouldToast = false;
       ActivityInfo activityInfo = tryGetActivity(componentName);
       boolean isActivity = activityInfo != null;
       if (isActivity) {
@@ -60,6 +62,7 @@ public class MyAccessibilityService extends AccessibilityService {
     if (!shouldTrack) {
       return;
     }
+
 
     final int eventType = event.getEventType();
     String eventText = null;
@@ -76,7 +79,7 @@ public class MyAccessibilityService extends AccessibilityService {
       return;
     }
 
-    printAllText(source);
+    printAllText(source, shouldToast);
 
   }
 
@@ -92,7 +95,7 @@ public class MyAccessibilityService extends AccessibilityService {
     }
   }
 
-  private void printAllText(AccessibilityNodeInfo source) {
+  private void printAllText(AccessibilityNodeInfo source, boolean shouldToast) {
     if (source == null) {
       return;
     }
@@ -105,13 +108,13 @@ public class MyAccessibilityService extends AccessibilityService {
       String eventData = "id: " + id + ", text:" + source.getText();
 
       Log.d(LOG_TAG, eventData);
-      BusProvider.UI_BUS.post(new TextChangeEvent(eventData));
+      BusProvider.UI_BUS.post(new TextChangeEvent(eventData, shouldToast));
 
     }
     for (int i = 0; i < source.getChildCount(); i++) {
       AccessibilityNodeInfo child = source.getChild(i);
       if (child != null) {
-        printAllText(child);
+        printAllText(child, shouldToast);
         child.recycle();
       }
     }

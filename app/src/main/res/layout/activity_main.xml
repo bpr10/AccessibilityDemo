@@ -19,22 +19,27 @@
         >
 
         <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="password"
-            android:inputType="textPassword"/>
-
-        <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/password"
             android:hint="UserName"/>
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cbx_toast_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Toast text changes"
+            android:textSize="14dp"
+            android:textStyle="bold"/>
+
         <ScrollView
             android:id="@+id/root_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/txt_log"
                 android:layout_width="match_parent"
@@ -47,8 +52,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"

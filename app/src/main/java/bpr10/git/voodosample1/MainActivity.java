@@ -1,19 +1,11 @@
 package bpr10.git.voodosample1;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceActivity;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,27 +15,28 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
-
-import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-  private static final String LOGTAG = MainActivity.class.getSimpleName();
+  private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-  EditText editText;
-  TextView txtLogs;
-  ScrollView rootScroll;
+  // views
   View rootText;
   View rootAccessibility;
   View btnSettings;
-  Bus bus;
+  EditText editText;
+  TextView txtLogs;
+  ScrollView rootScroll;
+  AppCompatCheckBox checkBox;
+
+  Toast toast;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
     editText = (EditText) findViewById(R.id.username);
     rootText = findViewById(R.id.root_text);
     rootAccessibility = findViewById(R.id.root_accessibility_disabled);
@@ -51,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     btnSettings.setOnClickListener(this);
     txtLogs = (TextView) findViewById(R.id.txt_log);
     rootScroll = (ScrollView) findViewById(R.id.root_scroll);
+    checkBox = (AppCompatCheckBox) findViewById(R.id.cbx_toast_text);
+
     // this hides view from accessibility
     ViewCompat.setImportantForAccessibility(editText, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
     ViewCompat.setImportantForAccessibility(txtLogs, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -70,6 +65,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     txtLogs.setText(txtLogs.getText(), TextView.BufferType.EDITABLE);
     ((Editable) txtLogs.getText()).insert(txtLogs.getText().length(), event.text + "\n");
     rootScroll.fullScroll(View.FOCUS_DOWN);
+
+    if (checkBox.isChecked() && event.shouldToast) {
+      if (toast != null) {
+        toast.cancel();
+      }
+      toast = Toast.makeText(this, event.text, Toast.LENGTH_SHORT);
+      toast.show();
+    }
   }
 
   @Override
@@ -102,7 +105,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       accessibilityEnabled = Settings.Secure.getInt(this.getContentResolver(),
           android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
     } catch (Settings.SettingNotFoundException e) {
-      Log.d(LOGTAG, "Error finding setting, default accessibility to not found: " + e.getMessage());
+      Log.d(LOG_TAG,
+          "Error finding setting, default accessibility to not found: " + e.getMessage());
     }
 
     TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');

@@ -6,9 +6,16 @@ package bpr10.git.voodosample1;
 
 public class TextChangeEvent {
 
+  String text;
+  boolean shouldToast = true;
+
   public TextChangeEvent(String text) {
     this.text = text;
   }
 
-  String text;
+  public TextChangeEvent(String text,boolean shouldToast) {
+    this.text = text;
+    this.shouldToast = shouldToast;
+  }
+
 }
